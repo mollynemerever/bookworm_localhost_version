@@ -47,6 +47,16 @@ function addSearchListener(){
           let li = document.createElement('li')
           li.classList.add('book-title')
           li.textContent = `${book.volumeInfo.title}`
+
+          let saveButton = document.createElement('button')
+          saveButton.textContent = 'Save To Reading List'
+          saveButton.addEventListener('click', (ev) => {
+            ev.preventDefault()
+            console.log('add button clicked')
+            saveBook(book)
+          })
+          li.appendChild(saveButton)
+
           let subUL = document.createElement('ul')
           subUL.classList.add('book-details')
           let subLI = document.createElement('li')
@@ -57,11 +67,41 @@ function addSearchListener(){
             img.src = book.volumeInfo.imageLinks.thumbnail
             subLI.appendChild(img)
           }
+
+
           subUL.appendChild(subLI)
           li.appendChild(subUL)
           ul.appendChild(li)
         })
       })
+  }
+
+  function saveBook(book){ //save book to db
+    console.log(book)
+
+    let bookTitle = book.volumeInfo.title
+    let bookAuthor = book.volumeInfo.authors[0]
+    // if(book.volumeInfo.imageLinks){ //not all books have images available
+      let bookPhoto = book.volumeInfo.imageLinks.thumbnail
+    //   return bookPhoto
+    // }
+    let bookDesc = book.volumeInfo.description
+  console.log('line 89')
+    let config = {
+      method: 'POST',
+      headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+      body: JSON.stringify({title: bookTitle, author: bookAuthor, photo_url: bookPhoto, description:bookDesc})
+    }
+
+    let url = 'http://localhost:3000/api/v1/books'
+
+    fetch(url, config)
+    // .then(resp => resp.json())
+    // .then(data => {
+    //   console.log(data)
+    // })
+
   }
 
   function clearSearchField(){ //clears search field
