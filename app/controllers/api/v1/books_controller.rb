@@ -1,17 +1,15 @@
 class Api::V1::BooksController < ActionController::Base
-skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
-  def create #save book to db
+    def create #save book to db
+      @book = Book.create(book_params)
+    end
 
-    @book = Book.create(book_params)
+  private
 
+  def book_params
+    params.require(:book).permit(:title, :author, :photo_url,:description)
   end
-
-private
-
-def book_params
-  params.require(:book).permit(:title, :author, :photo_url,:description)
-end
 
 
 

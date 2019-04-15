@@ -1,11 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
   alert('LOADED');
+  addLogInListener()
   addSearchListener()
   addClearButton()
 });
-
 const APIKEY = 'AIzaSyDsCVsxHCAgjfN7jFg5raF5JbnrUth2GkI'
 
+function addLogInListener(){
+  let button = document.getElementById('login-button')
+  console.log('line 11')
+  button.addEventListener('click', (ev) => {
+    ev.preventDefault()
+    console.log('clicked log in')
+    let username = document.getElementById('username').value //get user input
+    getUserHomepage(username)
+  })
+}
 
  function addClearButton(){
   let button = document.getElementById('clear-button')
@@ -15,7 +25,6 @@ const APIKEY = 'AIzaSyDsCVsxHCAgjfN7jFg5raF5JbnrUth2GkI'
     clearPageContents()
   })
  }
-
 
 function addSearchListener(){
   let button = document.getElementById('search-button')
@@ -28,7 +37,6 @@ function addSearchListener(){
     searchAndRender(searchUrl, searchTerm)
   })
 }
-  //data.items[0].volumeInfo.title
 
   function searchAndRender(url, searchTerm){ //searches google api and prints to page
     fetch(url)
@@ -56,7 +64,6 @@ function addSearchListener(){
             saveBook(book)
           })
           li.appendChild(saveButton)
-
           let subUL = document.createElement('ul')
           subUL.classList.add('book-details')
           let subLI = document.createElement('li')
@@ -67,8 +74,6 @@ function addSearchListener(){
             img.src = book.volumeInfo.imageLinks.thumbnail
             subLI.appendChild(img)
           }
-
-
           subUL.appendChild(subLI)
           li.appendChild(subUL)
           ul.appendChild(li)
@@ -97,11 +102,6 @@ function addSearchListener(){
     let url = 'http://localhost:3000/api/v1/books'
 
     fetch(url, config)
-    // .then(resp => resp.json())
-    // .then(data => {
-    //   console.log(data)
-    // })
-
   }
 
   function clearSearchField(){ //clears search field
@@ -114,4 +114,20 @@ function addSearchListener(){
     while(content.firstChild){
       content.removeChild(content.firstChild)
     }
+  }
+
+
+  function getUserHomepage(username){
+    let userName = username
+    console.log(username)
+    let config = {
+      method: 'POST',
+      headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+      body: JSON.stringify({username: userName})
+    }
+    let url = 'http://localhost:3000/api/v1/users'
+    fetch(url, config) //creates username
+    //if username exists, then render their homeage
+    //if username doesnt exist then render blank homepage
   }
