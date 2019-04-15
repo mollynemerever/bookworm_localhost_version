@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const APIKEY = 'AIzaSyDsCVsxHCAgjfN7jFg5raF5JbnrUth2GkI'
-//const searchTerm = 'crawdad'
+
 
  function addClearButton(){
   let button = document.getElementById('clear-button')
@@ -64,13 +64,14 @@ function addSearchListener(){
       })
   }
 
-  function clearSearchField(){
+  function clearSearchField(){ //clears search field
     let field = document.getElementById('search-input')
     field.value = ""
   }
 
-  function clearPageContents(){
+  function clearPageContents(){ //clears search results
     let content = document.getElementById('search-results')
-    let child = document.getElementsByClassName('book-title')
-    content.removeChild()
+    while(content.firstChild){
+      content.removeChild(content.firstChild)
+    }
   }
