@@ -9,6 +9,12 @@ class Api::V1::UsersbooksController < ActionController::Base
     render json: @usersbooks
   end
 
+  def show
+    @usersbooks = Usersbooks.find_by(user_id: params[:id])
+    #byebug
+    render json: @usersbooks
+  end
+
   private
 
   def usersbooks_params

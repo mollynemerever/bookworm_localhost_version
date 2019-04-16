@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  alert('LOADED');
   addLogInListener()
 });
 const APIKEY = 'AIzaSyDsCVsxHCAgjfN7jFg5raF5JbnrUth2GkI'
@@ -86,8 +85,6 @@ function addLogInListener(){
         console.log(data)
         createUsersBooksInstance(bookId)
       })
-
-
   }
 
   function createUsersBooksInstance(bookId){
@@ -98,14 +95,11 @@ function addLogInListener(){
             'Content-Type': 'application/json'},
        body: JSON.stringify({user_id: USERID, book_id: bookId})
     }
-
     fetch(url, config)
-      .then(resp => resp.json())
-      .then(data => {
-        console.log(data)
-      })
-
-
+      // .then(resp => resp.json())
+      // .then(data => {
+      //   console.log(data)
+      // })
   }
 
   function clearSearchField(){ //clears search field
@@ -132,14 +126,13 @@ function addLogInListener(){
     fetch(url, config)
       .then(resp => resp.json())
       .then(data => {
+        console.log(data)
         USERID = data.id
         let username = data.username
         renderHomePage(username)
-      })
-    //creates username
-    //if username exists, then render their homeage
-    //if username doesnt exist then render blank homepage
+        })
   }
+
 
   function renderHomePage(username){
     let welcome = document.getElementById('welcome-bar')
@@ -147,8 +140,16 @@ function addLogInListener(){
     let blurb = document.getElementById('fill-in')
     blurb.textContent = 'Interesting information about your account'
     renderSearchBar()
+    renderReadingList()   //functionality to render user's books
+  }
 
-    //add functionality to render the user's books
+  function renderReadingList(){
+    let url = `http://localhost:3000/api/v1/usersbooks/${USERID}`
+    fetch(url)
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data)
+      })
   }
 
   function renderSearchBar(){

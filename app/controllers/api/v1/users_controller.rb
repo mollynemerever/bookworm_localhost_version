@@ -6,14 +6,19 @@ class Api::V1::UsersController < ActionController::Base
   # def index
   # end
 
-  def create #save user to db
-    @user = User.create(user_params)
-    @@all << @user
-    render json: @user
+  def create #create and save user to db
+    if User.find_by(username: params[:username]) #if username exists
+      @user = User.find_by(username: params[:username]) #if username exists
+      render json: @user #return the instance of the user
+    else
+      @user = User.create(user_params) #create user
+      @@all << @user
+      render json: @user
+    end
   end
 
-  def show
-    @user = User.find(username)
+  def index
+
   end
 
   private
