@@ -10,7 +10,7 @@ class Api::V1::UsersbooksController < ActionController::Base
   end
 
   def show
-    @usersbooks = Usersbooks.find_by(user_id: params[:id])
+    @usersbooks = Usersbooks.where(user_id: params[:id])
     #byebug
     render json: @usersbooks
   end
