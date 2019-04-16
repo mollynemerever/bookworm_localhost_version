@@ -6,6 +6,12 @@ class Api::V1::BooksController < ActionController::Base
       render json: @book
     end
 
+    def show
+      #byebug
+      @book = Book.find(params[:id])
+      render json: @book
+    end
+
   private
 
   def book_params

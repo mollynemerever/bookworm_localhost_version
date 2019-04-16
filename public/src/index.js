@@ -22,7 +22,7 @@ function addLogInListener(){
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
+        //console.log(data)
         clearSearchField()
 
         let parentDiv = document.getElementById('search-results')
@@ -63,7 +63,7 @@ function addLogInListener(){
           saveButton.classList.add('cntr-button')
           saveButton.addEventListener('click', (ev) => {
             ev.preventDefault()
-            console.log('add button clicked')
+            //console.log('add button clicked')
             saveBook(book)
           })
           div.appendChild(saveButton)
@@ -73,7 +73,7 @@ function addLogInListener(){
   }
 
   function saveBook(book){ //save to books db
-    console.log(book)
+    //console.log(book)
     let bookTitle = book.volumeInfo.title
     let bookAuthor = book.volumeInfo.authors[0]
     let bookPhoto = book.volumeInfo.imageLinks.thumbnail
@@ -89,7 +89,7 @@ function addLogInListener(){
       .then(resp => resp.json())
       .then(data => {
         let bookId = data.id
-        console.log(data)
+        //console.log(data)
         createUsersBooksInstance(bookId)
       })
   }
@@ -133,7 +133,7 @@ function addLogInListener(){
     fetch(url, config)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
+        //console.log(data)
         USERID = data.id
         let username = data.username
         renderHomePage(username)
@@ -146,17 +146,66 @@ function addLogInListener(){
     welcome.textContent = `Welcome, ${username}!`
     let blurb = document.getElementById('fill-in')
     blurb.textContent = 'Interesting information about your account'
-    renderSearchBar()
-    renderReadingList()   //functionality to render user's books
+    //renderSearchBar()
+    getReadingList()   //functionality to render user's books
   }
 
-  function renderReadingList(){
+  function getReadingList(){
     let url = `http://localhost:3000/api/v1/usersbooks/${USERID}`
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
+        getReadingListBookData(data)
       })
+  }
+
+  function getReadingListBookData(data){
+    data.forEach(function(book){
+      let bookId = book.book_id
+      let url = `http://localhost:3000/api/v1/books/${bookId}`
+      fetch(url)
+        .then(resp => resp.json())
+        .then(data => {
+          console.log(data)
+          let title = data.title
+          let author = data.author
+          let image = data.photo_url
+          renderReadingList(title, author, image)
+        })
+    })
+  }
+
+  function renderReadingList(title, author, image){
+    let parentDiv = document.getElementById('search-results')
+    let div = document.createElement('div')
+    div.classList.add('card')
+    div.classList.add('h-100')
+    div.classList.add('mb-4')
+    div.textContent = `${title}`
+    parentDiv.appendChild(div)
+
+    let img = document.createElement('img')
+    img.src = image
+    img.classList.add('card-img-top')
+    img.classList.add('top-spacing')
+    img.classList.add('bottom-spacing')
+    div.appendChild(img)
+
+    let writer = document.createElement('div')
+    writer.textContent = `Author:  ${author}`
+    writer.classList.add('bottom-spacing')
+    div.appendChild(writer)
+
+    let deleteButton = document.createElement('button')
+    deleteButton.textContent = 'Remove From Reading List'
+    deleteButton.classList.add('btn-primary')
+    deleteButton.classList.add('cntr-button')
+    // deleteButton.addEventListener('click', (ev) => {
+    //   ev.preventDefault()
+    //   //console.log('add button clicked')
+    //   saveBook(book)
+    // })
+    div.appendChild(deleteButton)
   }
 
   function renderSearchBar(){
