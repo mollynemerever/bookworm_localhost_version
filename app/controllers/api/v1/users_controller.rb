@@ -9,6 +9,11 @@ class Api::V1::UsersController < ActionController::Base
   def create #save user to db
     @user = User.create(user_params)
     @@all << @user
+    render json: @user
+  end
+
+  def show
+    @user = User.find(username)
   end
 
   private

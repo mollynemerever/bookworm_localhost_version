@@ -3,6 +3,7 @@ class Api::V1::BooksController < ActionController::Base
 
     def create #save book to db
       @book = Book.create(book_params)
+      render json: @book
     end
 
   private
