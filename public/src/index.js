@@ -32,6 +32,7 @@ function addLogInListener(){
         let array = data.items
 
         array.forEach(function(book){
+
           let li = document.createElement('li')
           li.classList.add('book-title')
           li.textContent = `${book.volumeInfo.title}`
@@ -113,6 +114,8 @@ function addLogInListener(){
   function renderHomePage(username){
     let welcome = document.getElementById('welcome-bar')
     welcome.textContent = `Welcome, ${username}`
+    let blurb = document.getElementById('fill-in')
+    blurb.textContent = 'Interesting information about your account'
     renderSearchBar()
   }
 
@@ -128,12 +131,14 @@ function addLogInListener(){
     searchButton.type = 'button'
     searchButton.textContent = 'Search'
     searchButton.id = 'search-button'
+    searchButton.classList.add('btn-primary')
     searchBar.appendChild(searchButton)
 
     let clearButton = document.createElement('button')
     clearButton.type = 'button'
     clearButton.textContent = 'Clear Search Results'
     clearButton.id = 'clear-button'
+    clearButton.classList.add('btn-primary')
     searchBar.appendChild(clearButton)
 
     addSearchButtonListener()
