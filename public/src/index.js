@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   addLogInListener()
 });
 const APIKEY = 'AIzaSyDsCVsxHCAgjfN7jFg5raF5JbnrUth2GkI'
+var USERID = ""
 
 function addLogInListener(){
   let button = document.getElementById('login-button')
@@ -62,7 +63,7 @@ function addLogInListener(){
       })
   }
 
-  function saveBook(book){ //save book to db
+  function saveBook(book){ //save books db
     console.log(book)
     let bookTitle = book.volumeInfo.title
     let bookAuthor = book.volumeInfo.authors[0]
@@ -71,7 +72,6 @@ function addLogInListener(){
     //   return bookPhoto
     // }
     let bookDesc = book.volumeInfo.description
-  console.log('line 89')
     let config = {
       method: 'POST',
       headers: {'Accept': 'application/json',
@@ -79,7 +79,33 @@ function addLogInListener(){
       body: JSON.stringify({title: bookTitle, author: bookAuthor, photo_url: bookPhoto, description:bookDesc})
     }
     let url = 'http://localhost:3000/api/v1/books'
+    fetch(url, config) // saves to book db
+      .then(resp => resp.json())
+      .then(data => {
+        let bookId = data.id
+        console.log(data)
+        createUsersBooksInstance(bookId)
+      })
+
+
+  }
+
+  function createUsersBooksInstance(bookId){
+    let url = 'http://localhost:3000/api/v1/usersbooks'
+    let config = {
+      method: 'POST',
+      headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+       body: JSON.stringify({user_id: USERID, book_id: bookId})
+    }
+
     fetch(url, config)
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data)
+      })
+
+
   }
 
   function clearSearchField(){ //clears search field
@@ -96,19 +122,23 @@ function addLogInListener(){
 
 
   function logInUser(username){
-    let userName = username
-    console.log(username)
     let config = {
       method: 'POST',
       headers: {'Accept': 'application/json',
             'Content-Type': 'application/json'},
-      body: JSON.stringify({username: userName})
+      body: JSON.stringify({username: username})
     }
     let url = 'http://localhost:3000/api/v1/users'
-    fetch(url, config) //creates username
+    fetch(url, config)
+      .then(resp => resp.json())
+      .then(data => {
+        USERID = data.id
+        let username = data.username
+        renderHomePage(username)
+      })
+    //creates username
     //if username exists, then render their homeage
     //if username doesnt exist then render blank homepage
-    renderHomePage(username)
   }
 
   function renderHomePage(username){
@@ -117,6 +147,8 @@ function addLogInListener(){
     let blurb = document.getElementById('fill-in')
     blurb.textContent = 'Interesting information about your account'
     renderSearchBar()
+
+    //add functionality to render the user's books
   }
 
   function renderSearchBar(){
