@@ -25,51 +25,58 @@ function addLogInListener(){
         console.log(data)
         clearSearchField()
 
-        let ul = document.getElementById('search-results')
-        let header = document.getElementById('results-for')
+        let parentDiv = document.getElementById('search-results')
+        let header = document.createElement('h4')
+        header.id ='results-for'
+        header.classList.add('text-center')
         header.textContent = `Search Results for: ${searchTerm}`
+        parentDiv.appendChild(header)
 
         let array = data.items
 
         array.forEach(function(book){
 
-          let li = document.createElement('li')
-          li.classList.add('book-title')
-          li.textContent = `${book.volumeInfo.title}`
+          let div = document.createElement('div')
+          div.classList.add('card')
+          div.classList.add('h-100')
+          div.classList.add('mb-4')
+          div.textContent = `${book.volumeInfo.title}`
+
+
+          if(book.volumeInfo.imageLinks){ //not all books have images available
+            let img = document.createElement('img')
+            img.src = book.volumeInfo.imageLinks.thumbnail
+            img.classList.add('card-img-top')
+            img.classList.add('top-spacing')
+            img.classList.add('bottom-spacing')
+            div.appendChild(img)
+          }
+
+          let author = document.createElement('div')
+          author.textContent = `Author:  ${book.volumeInfo.authors}`
+          author.classList.add('bottom-spacing')
+          div.appendChild(author)
 
           let saveButton = document.createElement('button')
           saveButton.textContent = 'Save To Reading List'
+          saveButton.classList.add('btn-primary')
+          saveButton.classList.add('cntr-button')
           saveButton.addEventListener('click', (ev) => {
             ev.preventDefault()
             console.log('add button clicked')
             saveBook(book)
           })
-          li.appendChild(saveButton)
-          let subUL = document.createElement('ul')
-          subUL.classList.add('book-details')
-          let subLI = document.createElement('li')
-          subLI.classList.add('book-detail-item')
-          subLI.textContent = `Author(s):  ${book.volumeInfo.authors}`
-          if(book.volumeInfo.imageLinks){ //not all books have images available
-            let img = document.createElement('img')
-            img.src = book.volumeInfo.imageLinks.thumbnail
-            subLI.appendChild(img)
-          }
-          subUL.appendChild(subLI)
-          li.appendChild(subUL)
-          ul.appendChild(li)
+          div.appendChild(saveButton)
+          parentDiv.appendChild(div)
         })
       })
   }
 
-  function saveBook(book){ //save books db
+  function saveBook(book){ //save to books db
     console.log(book)
     let bookTitle = book.volumeInfo.title
     let bookAuthor = book.volumeInfo.authors[0]
-    // if(book.volumeInfo.imageLinks){ //not all books have images available
-      let bookPhoto = book.volumeInfo.imageLinks.thumbnail
-    //   return bookPhoto
-    // }
+    let bookPhoto = book.volumeInfo.imageLinks.thumbnail
     let bookDesc = book.volumeInfo.description
     let config = {
       method: 'POST',
@@ -136,7 +143,7 @@ function addLogInListener(){
 
   function renderHomePage(username){
     let welcome = document.getElementById('welcome-bar')
-    welcome.textContent = `Welcome, ${username}`
+    welcome.textContent = `Welcome, ${username}!`
     let blurb = document.getElementById('fill-in')
     blurb.textContent = 'Interesting information about your account'
     renderSearchBar()
@@ -165,6 +172,7 @@ function addLogInListener(){
     searchButton.textContent = 'Search'
     searchButton.id = 'search-button'
     searchButton.classList.add('btn-primary')
+    searchButton.classList.add('lft-button')
     searchBar.appendChild(searchButton)
 
     let clearButton = document.createElement('button')
@@ -172,6 +180,7 @@ function addLogInListener(){
     clearButton.textContent = 'Clear Search Results'
     clearButton.id = 'clear-button'
     clearButton.classList.add('btn-primary')
+    clearButton.classList.add('lft-button')
     searchBar.appendChild(clearButton)
 
     addSearchButtonListener()

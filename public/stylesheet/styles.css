@@ -1,83 +1,80 @@
-html,
-body {
-  height: 100%;
-  text-align: center;
-}
-
-.container {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
 body {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 40px;
+  justify-content: center;
+  padding-top: 30px;
   padding-bottom: 40px;
-  background-color: #f5f5f5;
+  background-color: #ffefdd;
 }
 
-.display-3 {
-    font-size: 4.5rem;
-    font-weight: 300;
-    line-height: 1.2;
+.top-spacing{
+  margin-top: .5rem!important;
 }
 
-.lead {
-    font-size: 1.25rem;
-    font-weight: 300;
+.bottom-spacing{
+  margin-bottom: .5rem!important;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
-    margin-left: 1rem;
+.h-100{
+  height:100%!important
 }
 
-form {
+.card-img-top {
+    width: 45%;
+    justify-content: center;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
-
-#form-signin {
-  width: 100%;
-  max-width: 420px;
-  padding: 15px;
-  margin: auto;
-  text-align: center!important;
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+    text-align: center;
+    padding: 15px;
 }
 
-
-.form-label-group > label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  margin-bottom: 0; /* Override default `<label>` margin */
-  line-height: 1.5;
-  color: #495057;
-  pointer-events: none;
-  cursor: text; /* Match the input under the label */
-  border: 1px solid transparent;
-  border-radius: .25rem;
-  transition: all .1s ease-in-out;
-}
-
-
-.text-center {
-  text-align: center!important;
+.jumbotron {
+  padding: 2rem 1rem;
+  /* margin-bottom: 1rem; */
+  /* background-color: #e9ecef; */
+  border-radius: .3rem;
 }
 
 .mb-4 {
   margin-bottom: 1.5rem!important;
 }
 
+.text-center {
+  text-align: center!important;
+}
+
+.cntr-button{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lft-button{
+  margin-left: 3px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #62a358;
+    border-color: #62a358;
 }
