@@ -5,24 +5,26 @@
     <script src="/src/index.js" charset="utf-8"></script>
     <link rel="stylesheet" type = "text/css" href="../../stylesheet/styles.css">
 
-
+   <link rel="shortcut icon" href="../../stylesheet/1f41b.png" />
     <title>bookworm</title>
   </head>
   <body>
-    <h1>index html from public folder</h1>
+    <h2 id='welcome-bar'></h2>
 
-    <h2>Log In</h2>
-
-    <div id="log-in">
-      <input type=text  id='username' placeholder='username'>
-      <button type='button' id='login-button'>Log In</button>
-    </div>
+    <form id="form-signin">
+      <div class="text-center mb-4">
+        <img src="../../stylesheet/1f41b.png" alt="book emoji" width = '72' height = '72'>
+        <h1 class="h3 mb-3 font-weight-normal">bookworm</h1>
+        <p>sign in to access your reading list</p>
+      </div>
+      <div id="log-in" class="form-label-group text-center">
+        <input type=text  id='username' placeholder='username'>
+        <button type='button' class="btn btn-lg btn-primary btn-block" id='login-button'>Log In</button>
+      </div>
+    </form>
 
 
     <div id='search-bar'>
-      <input type=text  id='search-input' placeholder='book title'>
-      <button type='button' id='search-button'>Search</button>
-      <button type='button' id='clear-button'>Clear Search Results</button>
     </div>
 
     <div id='book-list'>
@@ -31,7 +33,6 @@
       </ul>
     </div>
 
- <p>contents will go here</p>
 
   </body>
 </html>

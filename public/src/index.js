@@ -1,40 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
   alert('LOADED');
   addLogInListener()
-  addSearchListener()
-  addClearButton()
 });
 const APIKEY = 'AIzaSyDsCVsxHCAgjfN7jFg5raF5JbnrUth2GkI'
 
 function addLogInListener(){
   let button = document.getElementById('login-button')
-  console.log('line 11')
   button.addEventListener('click', (ev) => {
     ev.preventDefault()
     console.log('clicked log in')
-    let username = document.getElementById('username').value //get user input
-    getUserHomepage(username)
-  })
-}
-
- function addClearButton(){
-  let button = document.getElementById('clear-button')
-  button.addEventListener('click', (ev) => {
-    ev.preventDefault()
-    console.log('clicked clear')
-    clearPageContents()
-  })
- }
-
-function addSearchListener(){
-  let button = document.getElementById('search-button')
-  button.addEventListener('click', (ev) => {
-    ev.preventDefault()
-    let searchTerm = document.getElementById('search-input').value
-    console.log(searchTerm)
-    let searchUrl = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${APIKEY}`
-    console.log(searchUrl)
-    searchAndRender(searchUrl, searchTerm)
+    let doc = document.getElementById('form-signin')
+    let username = document.getElementById('username').value
+    while(doc.firstChild){ //clear log in form
+      doc.removeChild(doc.firstChild)
+    }
+    logInUser(username)
   })
 }
 
@@ -83,7 +63,6 @@ function addSearchListener(){
 
   function saveBook(book){ //save book to db
     console.log(book)
-
     let bookTitle = book.volumeInfo.title
     let bookAuthor = book.volumeInfo.authors[0]
     // if(book.volumeInfo.imageLinks){ //not all books have images available
@@ -98,9 +77,7 @@ function addSearchListener(){
             'Content-Type': 'application/json'},
       body: JSON.stringify({title: bookTitle, author: bookAuthor, photo_url: bookPhoto, description:bookDesc})
     }
-
     let url = 'http://localhost:3000/api/v1/books'
-
     fetch(url, config)
   }
 
@@ -117,7 +94,7 @@ function addSearchListener(){
   }
 
 
-  function getUserHomepage(username){
+  function logInUser(username){
     let userName = username
     console.log(username)
     let config = {
@@ -130,4 +107,56 @@ function addSearchListener(){
     fetch(url, config) //creates username
     //if username exists, then render their homeage
     //if username doesnt exist then render blank homepage
+    renderHomePage(username)
+  }
+
+  function renderHomePage(username){
+    let welcome = document.getElementById('welcome-bar')
+    welcome.textContent = `Welcome, ${username}`
+    renderSearchBar()
+  }
+
+  function renderSearchBar(){
+    let searchBar = document.getElementById('search-bar')
+    let searchField = document.createElement('input')
+    searchField.type = 'text'
+    searchField.id = 'search-input'
+    searchField.placeholder = 'book title'
+    searchBar.appendChild(searchField)
+
+    let searchButton = document.createElement('button')
+    searchButton.type = 'button'
+    searchButton.textContent = 'Search'
+    searchButton.id = 'search-button'
+    searchBar.appendChild(searchButton)
+
+    let clearButton = document.createElement('button')
+    clearButton.type = 'button'
+    clearButton.textContent = 'Clear Search Results'
+    clearButton.id = 'clear-button'
+    searchBar.appendChild(clearButton)
+
+    addSearchButtonListener()
+    addClearButtonListener()
+  }
+
+  function addClearButtonListener(){
+   let button = document.getElementById('clear-button')
+   button.addEventListener('click', (ev) => {
+     ev.preventDefault()
+     console.log('clicked clear')
+     clearPageContents()
+   })
+  }
+
+  function addSearchButtonListener(){
+    let button = document.getElementById('search-button')
+    button.addEventListener('click', (ev) => {
+      ev.preventDefault()
+      let searchTerm = document.getElementById('search-input').value
+      console.log(searchTerm)
+      let searchUrl = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${APIKEY}`
+      console.log(searchUrl)
+      searchAndRender(searchUrl, searchTerm)
+    })
   }
