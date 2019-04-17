@@ -244,10 +244,23 @@ function addLogInListener(){
     summary.classList.add('description')
     div.appendChild(summary)
 
+    let readButton = document.createElement('button')
+    readButton.textContent = 'unread'
+    readButton.classList.add('btn-primary')
+    readButton.addEventListener('click', (ev) => {
+        ev.preventDefault()
+        if (readButton.textContent === 'unread'){
+          readButton.textContent = 'read'
+        } else {
+          readButton.textContent = 'unread'
+        } 
+    })
+    div.appendChild(readButton)
+
     let deleteButton = document.createElement('button')
     deleteButton.textContent = 'remove from reading list'
     deleteButton.classList.add('btn-primary')
-    deleteButton.classList.add('cntr-button')
+    deleteButton.classList.add('lft-button')
     deleteButton.addEventListener('click', (ev) => {
       ev.preventDefault()
       console.log('delete button clicked')
