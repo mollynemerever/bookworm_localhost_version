@@ -58,6 +58,7 @@ function addLogInListener(){
           let summary = document.createElement('div')
           summary.textContent = `${book.volumeInfo.description}`
           summary.classList.add('bottom-spacing')
+          summary.classList.add('description')
           div.appendChild(summary)
 
           let saveButton = document.createElement('button')
@@ -240,6 +241,7 @@ function addLogInListener(){
     let summary = document.createElement('div')
     summary.textContent = `${bookDesc}`
     summary.classList.add('bottom-spacing')
+    summary.classList.add('description')
     div.appendChild(summary)
 
     let deleteButton = document.createElement('button')

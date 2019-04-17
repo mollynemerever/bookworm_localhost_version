@@ -29,6 +29,10 @@ body {
     justify-content: center;
 }
 
+.description {
+  font-size: 75%;
+}
+
 .card-img-top {
   vertical-align: middle;
   border-style: none;
@@ -41,8 +45,6 @@ body {
 .card {
     position: relative;
     width: 700px;
-    /* display: -ms-flexbox;
-    display: flex; */
     -ms-flex-direction: column;
     flex-direction: column;
     min-width: 0;
