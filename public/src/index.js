@@ -63,7 +63,7 @@ function addLogInListener(){
           saveButton.classList.add('cntr-button')
           saveButton.addEventListener('click', (ev) => {
             ev.preventDefault()
-            //console.log('add button clicked')
+            saveButton.textContent = 'Added To Reading List'
             saveBook(book)
           })
           div.appendChild(saveButton)
@@ -240,7 +240,7 @@ function addLogInListener(){
     let searchField = document.createElement('input')
     searchField.type = 'text'
     searchField.id = 'search-input'
-    searchField.placeholder = 'book title'
+    searchField.placeholder = 'book title or author'
     searchBar.appendChild(searchField)
 
     let searchButton = document.createElement('button')

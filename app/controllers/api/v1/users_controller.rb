@@ -3,8 +3,6 @@ class Api::V1::UsersController < ActionController::Base
 
   @@all = []
 
-  # def index
-  # end
 
   def create #create and save user to db
     if User.find_by(username: params[:username]) #if username exists
