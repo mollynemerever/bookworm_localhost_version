@@ -102,13 +102,9 @@ function addLogInListener(){
       method: 'POST',
       headers: {'Accept': 'application/json',
             'Content-Type': 'application/json'},
-       body: JSON.stringify({user_id: USERID, book_id: bookId})
+       body: JSON.stringify({user_id: USERID, book_id: bookId, read_status: false})
     }
     fetch(url, config)
-      // .then(resp => resp.json())
-      // .then(data => {
-      //   console.log(data)
-      // })
   }
 
   function clearSearchField(){ //clears search field
@@ -178,6 +174,7 @@ function addLogInListener(){
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
+        console.log(data)
         renderWelcomeMessage(data.length)
         getReadingListBookData(data)
       })
@@ -201,23 +198,26 @@ function addLogInListener(){
 
   function getReadingListBookData(data){
     data.forEach(function(book){
+      console.log(data)
       let bookId = book.book_id
+      let readStatus = book.read_status
+      let usersbooksId = book.id
       let url = `http://localhost:3000/api/v1/books/${bookId}`
       fetch(url)
         .then(resp => resp.json())
         .then(data => {
-          console.log(data)
+          //console.log(data)
           let title = data.title
           let author = data.author
           let image = data.photo_url
           let bookId = data.id
           let bookDesc = data.description
-          renderReadingList(title, author, image, bookId, bookDesc)
+          renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId)
         })
     })
   }
 
-  function renderReadingList(title, author, image, bookId, bookDesc){
+  function renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId){
     let parentDiv = document.getElementById('search-results')
     let div = document.createElement('div')
     div.classList.add('card')
@@ -245,15 +245,24 @@ function addLogInListener(){
     div.appendChild(summary)
 
     let readButton = document.createElement('button')
-    readButton.textContent = 'unread'
+    if(readStatus === true){
+      readButton.textContent = 'read'
+    } else {
+      readButton.textContent = 'unread'
+    }
     readButton.classList.add('btn-primary')
-    readButton.addEventListener('click', (ev) => {
+    readButton.addEventListener('click', (ev) => { // front end
         ev.preventDefault()
         if (readButton.textContent === 'unread'){
           readButton.textContent = 'read'
+          let status = true
+          updateReadStatus(usersbooksId, status) //backend update
         } else {
           readButton.textContent = 'unread'
-        } 
+          let status = false
+          updateReadStatus(usersbooksId, status) //backend update
+        }
+        //updateReadStatus(bookId, status) //backend update
     })
     div.appendChild(readButton)
 
@@ -267,6 +276,17 @@ function addLogInListener(){
       removeBook(bookId)
     })
     div.appendChild(deleteButton)
+  }
+
+  function updateReadStatus(usersbooksId, status){
+    let config = {
+      method: 'PATCH',
+      headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+      body: JSON.stringify({id: usersbooksId, read_status: status})
+    }
+    let url = `http://localhost:3000/api/v1/usersbooks/${usersbooksId}`
+    fetch(url, config)
   }
 
   function removeBook(bookId){

@@ -19,10 +19,17 @@ class Api::V1::UsersbooksController < ActionController::Base
     Usersbooks.delete(@usersbooks)
   end
 
+  def update
+    #byebug
+    @usersbooks = Usersbooks.where(id: params[:id])
+    @usersbooks.update(read_status: params[:read_status])
+    #@usersbooks.save
+  end
+
   private
 
   def usersbooks_params
-    params.permit(:user_id, :book_id)
+    params.permit(:user_id, :book_id, :read_status, :id)
   end
 
 end
