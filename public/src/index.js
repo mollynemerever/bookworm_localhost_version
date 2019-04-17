@@ -115,6 +115,8 @@ function addLogInListener(){
   }
 
   function clearPageContents(){ //clears search results
+    let searchForButton = document.getElementById('search-for-btn')
+    searchForButton.remove()
     let content = document.getElementById('search-results')
     while(content.firstChild){
       content.removeChild(content.firstChild)
@@ -146,8 +148,21 @@ function addLogInListener(){
     welcome.textContent = `Welcome, ${username}!`
     let blurb = document.getElementById('fill-in')
     blurb.textContent = 'Interesting information about your account'
-    //renderSearchBar()
     getReadingList()   //functionality to render user's books
+    let searchBar = document.getElementById('search-bar')
+    let searchForButton = document.createElement('button')
+    searchForButton.id = 'search-for-btn'
+    searchForButton.textContent = 'Search For Books'
+    searchForButton.classList.add('btn-primary')
+    searchForButton.classList.add('cntr-button')
+    searchForButton.classList.add('bottom-spacing')
+    searchForButton.addEventListener('click', (ev) => {
+      ev.preventDefault()
+      console.log('search button clicked')
+      clearPageContents()
+      renderSearchBar()
+    })
+    searchBar.appendChild(searchForButton)
   }
 
   function getReadingList(){
@@ -218,7 +233,6 @@ function addLogInListener(){
       body: JSON.stringify({user_id: USERID, book_id: bookId})
     }
     fetch(url, config)
-    
   }
 
   function renderSearchBar(){
