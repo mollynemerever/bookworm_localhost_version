@@ -4,7 +4,9 @@
   <head>
     <script src="/src/index.js" charset="utf-8"></script>
     <link rel="stylesheet" type = "text/css" href="../../stylesheet/styles.css">
-
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Quicksand:300');
+    </style>
    <link rel="shortcut icon" href="../../stylesheet/1f41b.png" />
     <title>bookworm</title>
   </head>
@@ -14,34 +16,27 @@
       <div class="text-center mb-4">
         <img src="../../stylesheet/1f41b.png" alt="book emoji" width = '72' height = '72'>
         <h1 class="h3">bookworm</h1>
-        <p>sign in to access your reading list</p>
+        <p>manage your personal reading list</p>
       </div>
       <div id="log-in" class="text-center mb-4">
         <input type=text  id='username' placeholder='username'>
-        <button type='button' class=" btn-primary lft-button" id='login-button'>Log In</button>
+        <button type='button' class=" btn-primary lft-button" id='login-button'>log in</button>
       </div>
     </form>
 
     <div>
-        <!-- Jumbotron Header -->
        <header class='jumbotron'>
-         <h1 id='welcome-bar'></h1>
-         <p  id='fill-in'></p>
-
+           <h1 id='welcome-bar'></h1>
+           <p  id='fill-in'></p>
        </header>
-        <div id='search-bar'>
-        </div>
-        <div id='return' class='top-spacing'>
-        </div>
-
-        <div id = "spacing">
-
-        </div>
-        <div id='search-results' class="container">
-
-        </div>
-
+          <div id='search-bar'>
+          </div>
+          <div id='return' class='top-spacing'>
+          </div>
+          <div id = "spacing">
+          </div>
+          <div id='search-results' class="container">
+          </div>
     </div>
-
   </body>
 </html>

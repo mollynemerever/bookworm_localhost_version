@@ -28,7 +28,7 @@ function addLogInListener(){
         let header = document.createElement('h4')
         header.id ='results-for'
         header.classList.add('text-center')
-        header.textContent = `Search Results for: ${searchTerm}`
+        header.textContent = `search results for: '${searchTerm}'`
         parentDiv.appendChild(header)
 
         let array = data.items
@@ -57,12 +57,12 @@ function addLogInListener(){
           div.appendChild(author)
 
           let saveButton = document.createElement('button')
-          saveButton.textContent = 'Save To Reading List'
+          saveButton.textContent = 'save to reading list'
           saveButton.classList.add('btn-primary')
           saveButton.classList.add('cntr-button')
           saveButton.addEventListener('click', (ev) => {
             ev.preventDefault()
-            saveButton.textContent = 'Added To Reading List'
+            saveButton.textContent = 'added to reading list'
             saveBook(book)
           })
           div.appendChild(saveButton)
@@ -139,9 +139,7 @@ function addLogInListener(){
 
   function renderHomePage(username){
     let welcome = document.getElementById('welcome-bar')
-    welcome.textContent = `Welcome, ${username}!`
-    let blurb = document.getElementById('fill-in')
-    blurb.textContent = 'Interesting information about your account'
+    welcome.textContent = `${username}`
     getReadingList()   //functionality to render user's books
     renderSearchForButton()
   }
@@ -150,7 +148,7 @@ function addLogInListener(){
     let searchBar = document.getElementById('search-bar')
     let searchForButton = document.createElement('button')
     searchForButton.id = 'search-for-btn'
-    searchForButton.textContent = 'Search For Books'
+    searchForButton.textContent = 'search for books'
     searchForButton.classList.add('btn-primary')
     searchForButton.classList.add('cntr-button')
     searchForButton.classList.add('bottom-spacing')
@@ -158,6 +156,7 @@ function addLogInListener(){
       ev.preventDefault()
       clearSearchForButton()
       clearPageContents()
+      clearWelcomeMessage()
       renderSearchBar()
       renderReturnButton()
     })
@@ -174,8 +173,19 @@ function addLogInListener(){
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
+        renderWelcomeMessage(data.length)
         getReadingListBookData(data)
       })
+  }
+
+  function renderWelcomeMessage(count){
+    let blurb = document.getElementById('fill-in')
+    blurb.textContent = `there are currently ${count} books in your reading list`
+  }
+
+  function clearWelcomeMessage(){
+    let blurb = document.getElementById('fill-in')
+    blurb.textContent = `'so many books, so little time.'   frank zappa`
   }
 
   function getReadingListBookData(data){
@@ -216,7 +226,7 @@ function addLogInListener(){
     div.appendChild(writer)
 
     let deleteButton = document.createElement('button')
-    deleteButton.textContent = 'Remove From Reading List'
+    deleteButton.textContent = 'remove from reading list'
     deleteButton.classList.add('btn-primary')
     deleteButton.classList.add('cntr-button')
     deleteButton.addEventListener('click', (ev) => {
@@ -245,7 +255,7 @@ function addLogInListener(){
   function renderReturnButton(){ //button to return to reading list from search
     let div = document.getElementById('return')
     let returnButton = document.createElement('button')
-    returnButton.textContent = 'Return To Reading List'
+    returnButton.textContent = 'return to reading list'
     returnButton.classList.add('btn-primary')
     returnButton.id = 'return-button'
     returnButton.addEventListener('click', (ev) => {
@@ -279,7 +289,7 @@ function addLogInListener(){
 
     let searchButton = document.createElement('button')
     searchButton.type = 'button'
-    searchButton.textContent = 'Search'
+    searchButton.textContent = 'search'
     searchButton.id = 'search-button'
     searchButton.classList.add('btn-primary')
     searchButton.classList.add('lft-button')
@@ -287,7 +297,7 @@ function addLogInListener(){
 
     let clearButton = document.createElement('button')
     clearButton.type = 'button'
-    clearButton.textContent = 'Clear Search Results'
+    clearButton.textContent = 'clear search results'
     clearButton.id = 'clear-button'
     clearButton.classList.add('btn-primary')
     clearButton.classList.add('lft-button')
