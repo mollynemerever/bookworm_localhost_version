@@ -170,12 +170,13 @@ function addLogInListener(){
           let title = data.title
           let author = data.author
           let image = data.photo_url
-          renderReadingList(title, author, image)
+          let bookId = data.id
+          renderReadingList(title, author, image, bookId)
         })
     })
   }
 
-  function renderReadingList(title, author, image){
+  function renderReadingList(title, author, image, bookId){
     let parentDiv = document.getElementById('search-results')
     let div = document.createElement('div')
     div.classList.add('card')
@@ -200,12 +201,24 @@ function addLogInListener(){
     deleteButton.textContent = 'Remove From Reading List'
     deleteButton.classList.add('btn-primary')
     deleteButton.classList.add('cntr-button')
-    // deleteButton.addEventListener('click', (ev) => {
-    //   ev.preventDefault()
-    //   //console.log('add button clicked')
-    //   saveBook(book)
-    // })
+    deleteButton.addEventListener('click', (ev) => {
+      ev.preventDefault()
+      console.log('delete button clicked')
+      removeBook(bookId)
+    })
     div.appendChild(deleteButton)
+  }
+
+  function removeBook(bookId){
+    let url = `http://localhost:3000/api/v1/usersbooks/${bookId}`
+    let config = {
+      method: 'DELETE',
+      headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+      body: JSON.stringify({user_id: USERID, book_id: bookId})
+    }
+    fetch(url, config)
+    
   }
 
   function renderSearchBar(){

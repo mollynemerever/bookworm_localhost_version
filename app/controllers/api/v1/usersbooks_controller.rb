@@ -11,8 +11,12 @@ class Api::V1::UsersbooksController < ActionController::Base
 
   def show
     @usersbooks = Usersbooks.where(user_id: params[:id])
-    #byebug
     render json: @usersbooks
+  end
+
+  def destroy
+    @usersbooks = Usersbooks.where(user_id: params[:user_id], book_id: params[:book_id])
+    Usersbooks.delete(@usersbooks)
   end
 
   private
