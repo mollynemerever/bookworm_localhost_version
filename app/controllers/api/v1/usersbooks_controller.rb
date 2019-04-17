@@ -4,7 +4,7 @@ class Api::V1::UsersbooksController < ActionController::Base
   @@all = []
 
   def create
-    @usersbooks = Usersbooks.create(usersbooks_params)
+    @usersbooks = Usersbooks.find_or_create_by(usersbooks_params)
     @@all << @usersbooks
     render json: @usersbooks
   end
