@@ -22,7 +22,6 @@ function addLogInListener(){
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
-        //console.log(data)
         clearSearchField()
 
         let parentDiv = document.getElementById('search-results')
@@ -73,7 +72,6 @@ function addLogInListener(){
   }
 
   function saveBook(book){ //save to books db
-    //console.log(book)
     let bookTitle = book.volumeInfo.title
     let bookAuthor = book.volumeInfo.authors[0]
     let bookPhoto = book.volumeInfo.imageLinks.thumbnail
@@ -89,7 +87,6 @@ function addLogInListener(){
       .then(resp => resp.json())
       .then(data => {
         let bookId = data.id
-        //console.log(data)
         createUsersBooksInstance(bookId)
       })
   }
@@ -115,7 +112,6 @@ function addLogInListener(){
   }
 
   function clearPageContents(){ //clears search results
-
     let content = document.getElementById('search-results')
     while(content.firstChild){
       content.removeChild(content.firstChild)
@@ -134,7 +130,6 @@ function addLogInListener(){
     fetch(url, config)
       .then(resp => resp.json())
       .then(data => {
-        //console.log(data)
         USERID = data.id
         let username = data.username
         renderHomePage(username)
@@ -148,6 +143,10 @@ function addLogInListener(){
     let blurb = document.getElementById('fill-in')
     blurb.textContent = 'Interesting information about your account'
     getReadingList()   //functionality to render user's books
+    renderSearchForButton()
+  }
+
+  function renderSearchForButton(){ //render search for books button
     let searchBar = document.getElementById('search-bar')
     let searchForButton = document.createElement('button')
     searchForButton.id = 'search-for-btn'
@@ -157,10 +156,10 @@ function addLogInListener(){
     searchForButton.classList.add('bottom-spacing')
     searchForButton.addEventListener('click', (ev) => {
       ev.preventDefault()
-      console.log('search button clicked')
       clearSearchForButton()
       clearPageContents()
       renderSearchBar()
+      renderReturnButton()
     })
     searchBar.appendChild(searchForButton)
   }
@@ -176,7 +175,6 @@ function addLogInListener(){
       .then(resp => resp.json())
       .then(data => {
         getReadingListBookData(data)
-        console.log(data)
       })
   }
 
@@ -187,7 +185,6 @@ function addLogInListener(){
       fetch(url)
         .then(resp => resp.json())
         .then(data => {
-          //console.log(data)
           let title = data.title
           let author = data.author
           let image = data.photo_url
@@ -245,7 +242,34 @@ function addLogInListener(){
     })
   }
 
-  function renderSearchBar(){
+  function renderReturnButton(){ //button to return to reading list from search
+    let div = document.getElementById('return')
+    let returnButton = document.createElement('button')
+    returnButton.textContent = 'Return To Reading List'
+    returnButton.classList.add('btn-primary')
+    returnButton.id = 'return-button'
+    returnButton.addEventListener('click', (ev) => {
+      ev.preventDefault()
+      clearPageContents()
+      clearReturnAndSearchButtons()
+      renderSearchForButton()
+      getReadingList()
+    })
+    div.appendChild(returnButton)
+  }
+
+  function clearReturnAndSearchButtons(){
+    let button = document.getElementById('return-button')
+    button.remove()
+    let searchInput = document.getElementById('search-input')
+    searchInput.remove()
+    let searchButton = document.getElementById('search-button')
+    searchButton.remove()
+    let clearButton = document.getElementById('clear-button')
+    clearButton.remove()
+  }
+
+  function renderSearchBar(){ //render field, srch button, clr button
     let searchBar = document.getElementById('search-bar')
     let searchField = document.createElement('input')
     searchField.type = 'text'

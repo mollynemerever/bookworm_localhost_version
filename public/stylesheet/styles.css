@@ -49,10 +49,19 @@ img {
     padding: 15px;
 }
 
+.search-bar {
+  padding: 1rem 1rem;
+  border-radius: .3rem;
+}
+
+#spacing {
+  position: static;
+  width: 180px;
+  height: 70px;
+}
+
 .jumbotron {
-  padding: 2rem 1rem;
-  /* margin-bottom: 1rem; */
-  /* background-color: #e9ecef; */
+  /* padding: 1rem 1rem; */
   border-radius: .3rem;
 }
 
