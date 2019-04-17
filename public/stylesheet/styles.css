@@ -29,24 +29,27 @@ body {
     justify-content: center;
 }
 
-img {
+.card-img-top {
   vertical-align: middle;
   border-style: none;
   display: block;
   margin-left: auto;
   margin-right: auto;
+  height: 30%;
+  width: 30%;
 }
 .card {
     position: relative;
-    display: -ms-flexbox;
-    display: flex;
+    width: 700px;
+    /* display: -ms-flexbox;
+    display: flex; */
     -ms-flex-direction: column;
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
     background-color: #fff;
     background-clip: border-box;
-    border: 1px solid rgba(0,0,0,.125);
+    border: 3px solid rgba(0,0,0,.125);
     border-radius: .25rem;
     text-align: center;
     padding: 15px;
@@ -60,7 +63,7 @@ img {
 #spacing {
   position: static;
   width: 180px;
-  height: 70px;
+  height: 50px;
 }
 
 .jumbotron {

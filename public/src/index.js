@@ -8,7 +8,6 @@ function addLogInListener(){
   let button = document.getElementById('login-button')
   button.addEventListener('click', (ev) => {
     ev.preventDefault()
-    console.log('clicked log in')
     let doc = document.getElementById('form-signin')
     let username = document.getElementById('username').value
     while(doc.firstChild){ //clear log in form
@@ -55,6 +54,11 @@ function addLogInListener(){
           author.textContent = `Author:  ${book.volumeInfo.authors}`
           author.classList.add('bottom-spacing')
           div.appendChild(author)
+
+          let summary = document.createElement('div')
+          summary.textContent = `${book.volumeInfo.description}`
+          summary.classList.add('bottom-spacing')
+          div.appendChild(summary)
 
           let saveButton = document.createElement('button')
           saveButton.textContent = 'save to reading list'
@@ -179,8 +183,14 @@ function addLogInListener(){
   }
 
   function renderWelcomeMessage(count){
-    let blurb = document.getElementById('fill-in')
-    blurb.textContent = `there are currently ${count} books in your reading list`
+    if(count > 1){
+      let blurb = document.getElementById('fill-in')
+      blurb.textContent = `there are currently ${count} books in your reading list`
+    } else {
+      let blurb = document.getElementById('fill-in')
+      blurb.textContent = `there are no books in your reading list! get searchin'!`
+    }
+
   }
 
   function clearWelcomeMessage(){
@@ -195,16 +205,18 @@ function addLogInListener(){
       fetch(url)
         .then(resp => resp.json())
         .then(data => {
+          console.log(data)
           let title = data.title
           let author = data.author
           let image = data.photo_url
           let bookId = data.id
-          renderReadingList(title, author, image, bookId)
+          let bookDesc = data.description
+          renderReadingList(title, author, image, bookId, bookDesc)
         })
     })
   }
 
-  function renderReadingList(title, author, image, bookId){
+  function renderReadingList(title, author, image, bookId, bookDesc){
     let parentDiv = document.getElementById('search-results')
     let div = document.createElement('div')
     div.classList.add('card')
@@ -224,6 +236,11 @@ function addLogInListener(){
     writer.textContent = `Author:  ${author}`
     writer.classList.add('bottom-spacing')
     div.appendChild(writer)
+
+    let summary = document.createElement('div')
+    summary.textContent = `${bookDesc}`
+    summary.classList.add('bottom-spacing')
+    div.appendChild(summary)
 
     let deleteButton = document.createElement('button')
     deleteButton.textContent = 'remove from reading list'
