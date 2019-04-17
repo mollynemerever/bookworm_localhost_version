@@ -115,8 +115,7 @@ function addLogInListener(){
   }
 
   function clearPageContents(){ //clears search results
-    let searchForButton = document.getElementById('search-for-btn')
-    searchForButton.remove()
+
     let content = document.getElementById('search-results')
     while(content.firstChild){
       content.removeChild(content.firstChild)
@@ -159,10 +158,16 @@ function addLogInListener(){
     searchForButton.addEventListener('click', (ev) => {
       ev.preventDefault()
       console.log('search button clicked')
+      clearSearchForButton()
       clearPageContents()
       renderSearchBar()
     })
     searchBar.appendChild(searchForButton)
+  }
+
+  function clearSearchForButton(){
+    let searchForButton = document.getElementById('search-for-btn')
+    searchForButton.remove()
   }
 
   function getReadingList(){
@@ -171,6 +176,7 @@ function addLogInListener(){
       .then(resp => resp.json())
       .then(data => {
         getReadingListBookData(data)
+        console.log(data)
       })
   }
 
@@ -181,7 +187,7 @@ function addLogInListener(){
       fetch(url)
         .then(resp => resp.json())
         .then(data => {
-          console.log(data)
+          //console.log(data)
           let title = data.title
           let author = data.author
           let image = data.photo_url
@@ -233,6 +239,10 @@ function addLogInListener(){
       body: JSON.stringify({user_id: USERID, book_id: bookId})
     }
     fetch(url, config)
+    .then(()=> {
+      clearPageContents()
+      getReadingList()
+    })
   }
 
   function renderSearchBar(){
@@ -268,6 +278,7 @@ function addLogInListener(){
    button.addEventListener('click', (ev) => {
      ev.preventDefault()
      console.log('clicked clear')
+     clearSearchForButton()
      clearPageContents()
    })
   }
