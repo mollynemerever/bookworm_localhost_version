@@ -29,3 +29,4 @@ This project is hosted on Heroku and can be accessed here:
 #### Time allocated: 4 days
 
 ## Database Schema Diagram
+![Data model](Screen Shot 2019-04-18 at 2.56.20 PM.png)
