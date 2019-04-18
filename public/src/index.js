@@ -202,6 +202,7 @@ function addLogInListener(){
     searchForButton.classList.add('bottom-spacing')
     searchForButton.addEventListener('click', (ev) => {
       ev.preventDefault()
+      clearFilterButton()
       clearSearchForButton()
       clearPageContents()
       clearWelcomeMessage()
@@ -209,6 +210,13 @@ function addLogInListener(){
       renderReturnButton()
     })
     searchBar.appendChild(searchForButton)
+  }
+
+  function clearFilterButton(){
+    let parent = document.getElementById('return')
+    while(parent.firstChild){ //clear log in form
+      parent.removeChild(parent.firstChild)
+    }
   }
 
   function clearSearchForButton(){
@@ -221,6 +229,7 @@ function addLogInListener(){
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
+        console.log(data)
         if(FILTER === "read books"){
           let results = data.filter(book => book.read_status === true)
           getReadingListBookData(results)
@@ -277,6 +286,7 @@ function addLogInListener(){
       let bookId = book.book_id
       let usersbooksId = book.id
       let readStatus = book.read_status
+      let note = book.comment
 
         let url = `http://localhost:3000/api/v1/books/${bookId}`
         fetch(url)
@@ -287,12 +297,12 @@ function addLogInListener(){
             let image = data.photo_url
             let bookId = data.id
             let bookDesc = data.description
-            renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId)
+            renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId, note)
           })
       })
     }
 
-  function renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId){
+  function renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId, note){
     let parentDiv = document.getElementById('search-results')
     let div = document.createElement('div')
     div.classList.add('card')
@@ -320,12 +330,17 @@ function addLogInListener(){
     div.appendChild(summary)
 
     let comment = document.createElement('input')
-    comment.textContent = ""
+      if (note.length > 0) {
+        comment.value = note
+      } else {
+        comment.value = ""
+      }
     comment.id = 'input'
     comment.classList.add('bottom-spacing')
     comment.classList.add('description')
     comment.classList.add('text-box')
     comment.classList.add('center')
+    comment.classList.add(usersbooksId)
     div.appendChild(comment)
 
     let subDiv = document.createElement('div')
@@ -333,15 +348,25 @@ function addLogInListener(){
 
 
     let commentSubmit = document.createElement('button')
-    commentSubmit.textContent = "add note"
+    if (note.length > 0) {
+      commentSubmit.textContent = 'update note'
+    } else {
+      commentSubmit.textContent = 'add note'
+    }
     commentSubmit.classList.add('btn-primary')
     commentSubmit.classList.add('bottom-spacing')
     commentSubmit.classList.add('lft-button')
     commentSubmit.addEventListener('click', (ev) => {
       ev.preventDefault()
-      let input = document.getElementById('input').value
-      addComment(input, usersbooksId)
-      commentSubmit.textContent = 'note added'
+      let identifier = usersbooksId
+      let input = document.getElementsByClassName(identifier)
+      let pass = input[0].value
+      addComment(pass, usersbooksId, bookId)
+      if (commentSubmit.textContent = 'update note'){
+        commentSubmit.textContent = 'note updated'
+      } else {
+        commentSubmit.textContent = 'note added'
+      }
     })
     subDiv.appendChild(commentSubmit)
 
@@ -386,12 +411,12 @@ function addLogInListener(){
   }
 
 
-  function addComment(input, usersbooksId){
+  function addComment(input, usersbooksId, bookId){
     let config = {
       method: 'PATCH',
       headers: {'Accept': 'application/json',
             'Content-Type': 'application/json'},
-      body: JSON.stringify({id: usersbooksId, comment: input})
+      body: JSON.stringify({id: usersbooksId, book_id: bookId, comment: input})
     }
     let url = `http://localhost:3000/api/v1/usersbooks/${usersbooksId}`
     fetch(url, config)
@@ -485,7 +510,6 @@ function addLogInListener(){
    let button = document.getElementById('clear-button')
    button.addEventListener('click', (ev) => {
      ev.preventDefault()
-     clearSearchForButton()
      clearPageContents()
    })
   }
