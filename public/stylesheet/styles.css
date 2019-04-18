@@ -18,6 +18,13 @@ body {
   right: 0;
 }
 
+.center {
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .top-spacing{
   margin-top: .5rem!important;
 }
@@ -61,6 +68,11 @@ body {
     border-radius: .25rem;
     text-align: center;
     padding: 15px;
+}
+
+.text-box{
+  height: 40px;
+  width: 170px;
 }
 
 .search-bar {

@@ -103,7 +103,7 @@ function addLogInListener(){
       method: 'POST',
       headers: {'Accept': 'application/json',
             'Content-Type': 'application/json'},
-       body: JSON.stringify({user_id: USERID, book_id: bookId, read_status: false})
+       body: JSON.stringify({user_id: USERID, book_id: bookId, read_status: false, comment: ""})
     }
     fetch(url, config)
   }
@@ -319,7 +319,34 @@ function addLogInListener(){
     summary.classList.add('description')
     div.appendChild(summary)
 
+    let comment = document.createElement('input')
+    comment.textContent = ""
+    comment.id = 'input'
+    comment.classList.add('bottom-spacing')
+    comment.classList.add('description')
+    comment.classList.add('text-box')
+    comment.classList.add('center')
+    div.appendChild(comment)
+
+    let subDiv = document.createElement('div')
+    div.appendChild(subDiv)
+
+
+    let commentSubmit = document.createElement('button')
+    commentSubmit.textContent = "add note"
+    commentSubmit.classList.add('btn-primary')
+    commentSubmit.classList.add('bottom-spacing')
+    commentSubmit.classList.add('lft-button')
+    commentSubmit.addEventListener('click', (ev) => {
+      ev.preventDefault()
+      let input = document.getElementById('input').value
+      addComment(input, usersbooksId)
+      commentSubmit.textContent = 'note added'
+    })
+    subDiv.appendChild(commentSubmit)
+
     let readButton = document.createElement('button')
+    readButton.classList.add('lft-button')
     if(readStatus === true){
       readButton.textContent = 'read'
     } else {
@@ -337,9 +364,8 @@ function addLogInListener(){
           let status = false
           updateReadStatus(usersbooksId, status) //backend update
         }
-        //updateReadStatus(bookId, status) //backend update
     })
-    div.appendChild(readButton)
+    subDiv.appendChild(readButton)
 
     let deleteButton = document.createElement('button')
     deleteButton.textContent = 'remove from collection'
@@ -349,7 +375,29 @@ function addLogInListener(){
       ev.preventDefault()
       removeBook(bookId)
     })
-    div.appendChild(deleteButton)
+    subDiv.appendChild(deleteButton)
+  }
+
+  function clearCommentBox(){
+    let box = document.getElementsByClassName('text-box')
+    for(item of box) {
+      item.value = ""
+    }
+  }
+
+
+  function addComment(input, usersbooksId){
+    let config = {
+      method: 'PATCH',
+      headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+      body: JSON.stringify({id: usersbooksId, comment: input})
+    }
+    let url = `http://localhost:3000/api/v1/usersbooks/${usersbooksId}`
+    fetch(url, config)
+      .then(() => {
+        clearCommentBox()
+      })
   }
 
   function updateReadStatus(usersbooksId, status){
