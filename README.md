@@ -29,4 +29,4 @@ This project is hosted on Heroku and can be accessed here:
 #### Time allocated: 4 days
 
 ## Database Schema Diagram
-![Data model](Screen Shot 2019-04-18 at 2.56.20 PM.png)
+![Data model](https://github.com/mollynemerever/bookworm-Module3-Solo-Project/blob/master/Screen%20Shot%202019-04-18%20at%202.56.20%20PM.png)
