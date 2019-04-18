@@ -27,3 +27,5 @@ This project is hosted on Heroku and can be accessed here:
 5.	Utilize fetch requests to completed CRUD.
 
 #### Time allocated: 4 days
+
+## Database Schema Diagram
