@@ -1,5 +1,5 @@
 # bookworm
-##curate and manage your personal book collection
+## curate and manage your personal book collection
 
 #### Molly Nemerever
 
