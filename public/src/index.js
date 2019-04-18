@@ -142,9 +142,26 @@ function addLogInListener(){
   function renderHomePage(username){
     let welcome = document.getElementById('welcome-bar')
     welcome.textContent = `${username}`
+    let div = document.getElementById('log-out')
+    let button = document.createElement('button')
+    button.classList.add('btn-primary')
+    button.textContent = 'log out'
+    button.addEventListener('click', (ev) => {
+      ev.preventDefault()
+      logoutUser()
+    })
+    div.appendChild(button)
     getReadingList()   //functionality to render user's books
     renderSearchForButton()
     renderFilter()
+  }
+
+  function logoutUser(){
+    FILTER = ""
+    USERID = ""
+    location.reload()
+    addLogInListener()
+
   }
 
   function renderFilter(){
