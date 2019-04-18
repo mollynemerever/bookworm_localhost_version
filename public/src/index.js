@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 const APIKEY = 'AIzaSyDsCVsxHCAgjfN7jFg5raF5JbnrUth2GkI'
 var USERID = ""
+var FILTER = ""
 
 function addLogInListener(){
   let button = document.getElementById('login-button')
@@ -62,12 +63,12 @@ function addLogInListener(){
           div.appendChild(summary)
 
           let saveButton = document.createElement('button')
-          saveButton.textContent = 'save to reading list'
+          saveButton.textContent = 'save to my collection'
           saveButton.classList.add('btn-primary')
           saveButton.classList.add('cntr-button')
           saveButton.addEventListener('click', (ev) => {
             ev.preventDefault()
-            saveButton.textContent = 'added to reading list'
+            saveButton.textContent = 'added to collection'
             saveBook(book)
           })
           div.appendChild(saveButton)
@@ -143,7 +144,36 @@ function addLogInListener(){
     welcome.textContent = `${username}`
     getReadingList()   //functionality to render user's books
     renderSearchForButton()
+    renderFilter()
   }
+
+  function renderFilter(){
+    let div = document.getElementById('return')
+    let filter = document.createElement('button')
+    filter.textContent = 'filter'
+    filter.classList.add('btn-primary')
+    filter.classList.add('lft-button')
+    let options = ["all books", "read books", "unread books"]
+    let select = document.createElement('select')
+    select.id = 'filterOptions'
+    div.appendChild(select)
+    for(let i=0; i<options.length; i++){
+      let option = document.createElement('option')
+      option.value = options[i]
+      option.text = options[i]
+      select.appendChild(option)
+    }
+    filter.addEventListener('click', (ev) => {
+      ev.preventDefault()
+      console.log(`${select.value}`)
+      FILTER = select.value
+      console.log(FILTER)
+      clearPageContents()
+      getReadingList()
+    })
+    div.appendChild(filter)
+  }
+
 
   function renderSearchForButton(){ //render search for books button
     let searchBar = document.getElementById('search-bar')
@@ -174,48 +204,76 @@ function addLogInListener(){
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
-        renderWelcomeMessage(data.length)
-        getReadingListBookData(data)
+        if(FILTER === "read books"){
+          let results = data.filter(book => book.read_status === true)
+          getReadingListBookData(results)
+          renderWelcomeMessage(results.length)
+          FILTER = ""
+        } else if (FILTER === "unread books") {
+          let results = data.filter(book => book.read_status === false)
+          getReadingListBookData(results)
+          renderWelcomeMessage(results.length)
+          FILTER = ""
+        } else {
+          getReadingListBookData(data)
+          renderWelcomeMessage(data.length)
+          FILTER = ""
+        }
       })
   }
 
   function renderWelcomeMessage(count){
-    if(count > 1){
+    if(FILTER === "unread books" && count > 1){
       let blurb = document.getElementById('fill-in')
-      blurb.textContent = `there are currently ${count} books in your reading list`
+      blurb.textContent = `there are currently ${count} books in your unread book collection`
+    } else if (FILTER === "read books" && count > 1) {
+      let blurb = document.getElementById('fill-in')
+      blurb.textContent = `there are currently ${count} books in your read book collection`
+    } else if (FILTER === "all books" && count > 1) {
+      let blurb = document.getElementById('fill-in')
+      blurb.textContent = `there are currently ${count} books in your book collection`
+    } else if (FILTER === "unread books" && count === 1) {
+      let blurb = document.getElementById('fill-in')
+      blurb.textContent = `there is currently ${count} book in your unread book collection`
+    }  else if (FILTER === "read books" && count === 1) {
+      let blurb = document.getElementById('fill-in')
+      blurb.textContent = `there is currently ${count} book in your read book collection`
+    } else if (FILTER === "all books" && count === 1) {
+      let blurb = document.getElementById('fill-in')
+      blurb.textContent = `there is currently ${count} book in your book collection`
+    } else if (FILTER === "" && count > 1) {
+      let blurb = document.getElementById('fill-in')
+      blurb.textContent = `there are currently ${count} books in your book collection`
     } else {
       let blurb = document.getElementById('fill-in')
-      blurb.textContent = `there are no books in your reading list! get searchin'!`
+      blurb.textContent = `there are no books in your collection! get searchin'!`
     }
-
   }
 
   function clearWelcomeMessage(){
     let blurb = document.getElementById('fill-in')
-    blurb.textContent = `'so many books, so little time.'   frank zappa`
+    blurb.textContent = `so many books, so little time... `
   }
 
   function getReadingListBookData(data){
     data.forEach(function(book){
-      console.log(data)
       let bookId = book.book_id
-      let readStatus = book.read_status
       let usersbooksId = book.id
-      let url = `http://localhost:3000/api/v1/books/${bookId}`
-      fetch(url)
-        .then(resp => resp.json())
-        .then(data => {
-          //console.log(data)
-          let title = data.title
-          let author = data.author
-          let image = data.photo_url
-          let bookId = data.id
-          let bookDesc = data.description
-          renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId)
-        })
-    })
-  }
+      let readStatus = book.read_status
+
+        let url = `http://localhost:3000/api/v1/books/${bookId}`
+        fetch(url)
+          .then(resp => resp.json())
+          .then(data => {
+            let title = data.title
+            let author = data.author
+            let image = data.photo_url
+            let bookId = data.id
+            let bookDesc = data.description
+            renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId)
+          })
+      })
+    }
 
   function renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId){
     let parentDiv = document.getElementById('search-results')
@@ -267,12 +325,11 @@ function addLogInListener(){
     div.appendChild(readButton)
 
     let deleteButton = document.createElement('button')
-    deleteButton.textContent = 'remove from reading list'
+    deleteButton.textContent = 'remove from collection'
     deleteButton.classList.add('btn-primary')
     deleteButton.classList.add('lft-button')
     deleteButton.addEventListener('click', (ev) => {
       ev.preventDefault()
-      console.log('delete button clicked')
       removeBook(bookId)
     })
     div.appendChild(deleteButton)
@@ -307,7 +364,7 @@ function addLogInListener(){
   function renderReturnButton(){ //button to return to reading list from search
     let div = document.getElementById('return')
     let returnButton = document.createElement('button')
-    returnButton.textContent = 'return to reading list'
+    returnButton.textContent = 'return to my book collection'
     returnButton.classList.add('btn-primary')
     returnButton.id = 'return-button'
     returnButton.addEventListener('click', (ev) => {
@@ -363,7 +420,6 @@ function addLogInListener(){
    let button = document.getElementById('clear-button')
    button.addEventListener('click', (ev) => {
      ev.preventDefault()
-     console.log('clicked clear')
      clearSearchForButton()
      clearPageContents()
    })
@@ -374,9 +430,7 @@ function addLogInListener(){
     button.addEventListener('click', (ev) => {
       ev.preventDefault()
       let searchTerm = document.getElementById('search-input').value
-      console.log(searchTerm)
       let searchUrl = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${APIKEY}`
-      console.log(searchUrl)
       searchAndRender(searchUrl, searchTerm)
     })
   }

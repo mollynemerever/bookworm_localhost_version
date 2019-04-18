@@ -20,10 +20,8 @@ class Api::V1::UsersbooksController < ActionController::Base
   end
 
   def update
-    #byebug
     @usersbooks = Usersbooks.where(id: params[:id])
     @usersbooks.update(read_status: params[:read_status])
-    #@usersbooks.save
   end
 
   private
