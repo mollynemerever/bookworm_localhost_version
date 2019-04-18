@@ -12,6 +12,12 @@ body {
   font-family: 'Quicksand', sans-serif;
 }
 
+#log-out {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .top-spacing{
   margin-top: .5rem!important;
 }
