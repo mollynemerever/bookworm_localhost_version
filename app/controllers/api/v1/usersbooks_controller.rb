@@ -21,13 +21,17 @@ class Api::V1::UsersbooksController < ActionController::Base
 
   def update
     @usersbooks = Usersbooks.where(id: params[:id])
-    @usersbooks.update(read_status: params[:read_status])
+    if params[:read_status] #if params sent over with read_status update
+      @usersbooks.update(read_status: params[:read_status])
+    else #params sent with comment update
+      @usersbooks.update(comment: params[:comment])
+    end
   end
 
   private
 
   def usersbooks_params
-    params.permit(:user_id, :book_id, :read_status, :id)
+    params.permit(:user_id, :book_id, :read_status, :id, :comment)
   end
 
 end
