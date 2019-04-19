@@ -25,6 +25,7 @@ This project is hosted on Heroku and can be accessed here:
 2.	Build a Rails backend, paired with JavaScript frontend.
 3.	Build a database schema (using Postgres).
 5.	Utilize fetch requests to completed CRUD.
+6.  Do not implement user authentication system with passwords.
 
 #### Time allocated: 4 days
 
