@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   addLogInListener()
 });
-const APIKEY = 'AIzaSyDsCVsxHCAgjfN7jFg5raF5JbnrUth2GkI'
+
 var USERID = ""
 var FILTER = ""
 
-function addLogInListener(){
+function addLogInListener(){  //add listener to log in button
   let button = document.getElementById('login-button')
   button.addEventListener('click', (ev) => {
     ev.preventDefault()
@@ -97,7 +97,7 @@ function addLogInListener(){
       })
   }
 
-  function createUsersBooksInstance(bookId){
+  function createUsersBooksInstance(bookId){ //create userbook relationship in db
     let url = 'http://localhost:3000/api/v1/usersbooks'
     let config = {
       method: 'POST',
@@ -108,7 +108,7 @@ function addLogInListener(){
     fetch(url, config)
   }
 
-  function clearSearchField(){ //clears search field
+  function clearSearchField(){ //clears search textfield
     let field = document.getElementById('search-input')
     field.value = ""
   }
@@ -121,7 +121,7 @@ function addLogInListener(){
   }
 
 
-  function logInUser(username){
+  function logInUser(username){ //creates user accnt if new
     let config = {
       method: 'POST',
       headers: {'Accept': 'application/json',
@@ -139,7 +139,7 @@ function addLogInListener(){
   }
 
 
-  function renderHomePage(username){
+  function renderHomePage(username){ //renders homepage greeting
     let welcome = document.getElementById('welcome-bar')
     welcome.textContent = `${username}`
     let div = document.getElementById('log-out')
@@ -151,12 +151,12 @@ function addLogInListener(){
       logoutUser()
     })
     div.appendChild(button)
-    getReadingList()   //functionality to render user's books
+    getReadingList()
     renderSearchForButton()
     renderFilter()
   }
 
-  function logoutUser(){
+  function logoutUser(){ //clear current user global variables, load login
     FILTER = ""
     USERID = ""
     location.reload()
@@ -164,7 +164,7 @@ function addLogInListener(){
 
   }
 
-  function renderFilter(){
+  function renderFilter(){ //display the filter buttons for read/unread on hp
     let div = document.getElementById('return')
     let filter = document.createElement('button')
     filter.textContent = 'filter'
@@ -212,25 +212,24 @@ function addLogInListener(){
     searchBar.appendChild(searchForButton)
   }
 
-  function clearFilterButton(){
+  function clearFilterButton(){ //removes filter button when going to search pg
     let parent = document.getElementById('return')
-    while(parent.firstChild){ //clear log in form
+    while(parent.firstChild){
       parent.removeChild(parent.firstChild)
     }
   }
 
-  function clearSearchForButton(){
+  function clearSearchForButton(){ //clear search for button when not needed
     let searchForButton = document.getElementById('search-for-btn')
     searchForButton.remove()
   }
 
-  function getReadingList(){
+  function getReadingList(){ //gets book list from usersbooks db
     let url = `http://localhost:3000/api/v1/usersbooks/${USERID}`
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
-        if(FILTER === "read books"){
+        if(FILTER === "read books"){ //filter if needed
           let results = data.filter(book => book.read_status === true)
           getReadingListBookData(results)
           renderWelcomeMessage(results.length)
@@ -248,7 +247,7 @@ function addLogInListener(){
       })
   }
 
-  function renderWelcomeMessage(count){
+  function renderWelcomeMessage(count){ //customizes welcome message per usr
     if(FILTER === "unread books" && count > 1){
       let blurb = document.getElementById('fill-in')
       blurb.textContent = `there are currently ${count} books in your unread book collection`
@@ -276,12 +275,13 @@ function addLogInListener(){
     }
   }
 
-  function clearWelcomeMessage(){
+  function clearWelcomeMessage(){ //remove message when not needed(srch pg)
     let blurb = document.getElementById('fill-in')
     blurb.textContent = `so many books, so little time... `
   }
 
-  function getReadingListBookData(data){
+  function getReadingListBookData(data){ //get book data from books db
+    console.log(data)
     data.forEach(function(book){
       let bookId = book.book_id
       let usersbooksId = book.id
@@ -302,6 +302,7 @@ function addLogInListener(){
       })
     }
 
+    //display each book/book attributes in a div properly formatted
   function renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId, note){
     let parentDiv = document.getElementById('search-results')
     let div = document.createElement('div')
@@ -403,15 +404,9 @@ function addLogInListener(){
     subDiv.appendChild(deleteButton)
   }
 
-  function clearCommentBox(){
-    let box = document.getElementsByClassName('text-box')
-    for(item of box) {
-      item.value = ""
-    }
-  }
 
 
-  function addComment(input, usersbooksId, bookId){
+  function addComment(input, usersbooksId, bookId){ //create cmment in db
     let config = {
       method: 'PATCH',
       headers: {'Accept': 'application/json',
@@ -421,11 +416,12 @@ function addLogInListener(){
     let url = `http://localhost:3000/api/v1/usersbooks/${usersbooksId}`
     fetch(url, config)
       .then(() => {
-        clearCommentBox()
+        clearPageContents()
+        getReadingList()
       })
   }
 
-  function updateReadStatus(usersbooksId, status){
+  function updateReadStatus(usersbooksId, status){ //changes read status
     let config = {
       method: 'PATCH',
       headers: {'Accept': 'application/json',
@@ -436,7 +432,7 @@ function addLogInListener(){
     fetch(url, config)
   }
 
-  function removeBook(bookId){
+  function removeBook(bookId){ //removes book from usersbooks, but not books db
     let url = `http://localhost:3000/api/v1/usersbooks/${bookId}`
     let config = {
       method: 'DELETE',
@@ -467,7 +463,7 @@ function addLogInListener(){
     div.appendChild(returnButton)
   }
 
-  function clearReturnAndSearchButtons(){
+  function clearReturnAndSearchButtons(){ //rmvs srch/rtn buttons when not needed
     let button = document.getElementById('return-button')
     button.remove()
     let searchInput = document.getElementById('search-input')
@@ -506,7 +502,7 @@ function addLogInListener(){
     addClearButtonListener()
   }
 
-  function addClearButtonListener(){
+  function addClearButtonListener(){ //add listener to clear search button
    let button = document.getElementById('clear-button')
    button.addEventListener('click', (ev) => {
      ev.preventDefault()
@@ -514,12 +510,12 @@ function addLogInListener(){
    })
   }
 
-  function addSearchButtonListener(){
+  function addSearchButtonListener(){ //add listener to search button
     let button = document.getElementById('search-button')
     button.addEventListener('click', (ev) => {
       ev.preventDefault()
       let searchTerm = document.getElementById('search-input').value
-      let searchUrl = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${APIKEY}`
+      let searchUrl = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}`
       searchAndRender(searchUrl, searchTerm)
     })
   }

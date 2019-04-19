@@ -6,6 +6,8 @@ body {
   -ms-flex-align: center;
   align-items: center;
   justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
   padding-top: 30px;
   padding-bottom: 40px;
   background-color: #ffefdd;
@@ -15,7 +17,7 @@ body {
 #log-out {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 30px;
 }
 
 .center {
@@ -73,6 +75,7 @@ body {
 .text-box{
   height: 40px;
   width: 170px;
+  line-height: 40px;
 }
 
 .search-bar {

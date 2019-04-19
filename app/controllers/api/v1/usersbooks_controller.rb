@@ -1,6 +1,7 @@
 class Api::V1::UsersbooksController < ActionController::Base
   skip_before_action :verify_authenticity_token
 
+
   @@all = []
 
   def create
@@ -10,7 +11,7 @@ class Api::V1::UsersbooksController < ActionController::Base
   end
 
   def show
-    @usersbooks = Usersbooks.where(user_id: params[:id])
+    @usersbooks = Usersbooks.where(user_id: params[:id]).order(:created_at)
     render json: @usersbooks
   end
 
