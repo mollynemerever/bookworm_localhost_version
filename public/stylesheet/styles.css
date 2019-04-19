@@ -15,7 +15,7 @@ body {
 #log-out {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 30px;
 }
 
 .center {
@@ -73,6 +73,7 @@ body {
 .text-box{
   height: 40px;
   width: 170px;
+  line-height: 40px;
 }
 
 .search-bar {

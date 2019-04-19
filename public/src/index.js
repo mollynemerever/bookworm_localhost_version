@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   addLogInListener()
 });
-const APIKEY = 'AIzaSyDsCVsxHCAgjfN7jFg5raF5JbnrUth2GkI'
+
 var USERID = ""
 var FILTER = ""
 
@@ -229,7 +229,6 @@ function addLogInListener(){
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
-        console.log(data)
         if(FILTER === "read books"){
           let results = data.filter(book => book.read_status === true)
           getReadingListBookData(results)
@@ -282,24 +281,31 @@ function addLogInListener(){
   }
 
   function getReadingListBookData(data){
+    console.log(data)
+    let array = []
     data.forEach(function(book){
-      let bookId = book.book_id
-      let usersbooksId = book.id
-      let readStatus = book.read_status
-      let note = book.comment
+      let result = {} //push each book into its own object
+      result.bookId = book.book_id
+      result.usersbooksId = book.id
+      result.readStatus = book.read_status
+      result.note = book.comment
 
-        let url = `http://localhost:3000/api/v1/books/${bookId}`
+        let url = `http://localhost:3000/api/v1/books/${result.bookId}`
         fetch(url)
           .then(resp => resp.json())
           .then(data => {
-            let title = data.title
-            let author = data.author
-            let image = data.photo_url
-            let bookId = data.id
-            let bookDesc = data.description
-            renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId, note)
+            result.title = data.title
+            result.author = data.author
+            result.image = data.photo_url
+            result.bookId = data.id
+            result.bookDesc = data.description
+            array.push(result)
+            //renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId, note)
           })
+          console.log(result)
       })
+
+      console.log(array)
     }
 
   function renderReadingList(title, author, image, bookId, bookDesc, readStatus, usersbooksId, note){
@@ -403,12 +409,6 @@ function addLogInListener(){
     subDiv.appendChild(deleteButton)
   }
 
-  function clearCommentBox(){
-    let box = document.getElementsByClassName('text-box')
-    for(item of box) {
-      item.value = ""
-    }
-  }
 
 
   function addComment(input, usersbooksId, bookId){
@@ -421,7 +421,8 @@ function addLogInListener(){
     let url = `http://localhost:3000/api/v1/usersbooks/${usersbooksId}`
     fetch(url, config)
       .then(() => {
-        clearCommentBox()
+        clearPageContents()
+        getReadingList()
       })
   }
 
@@ -519,7 +520,7 @@ function addLogInListener(){
     button.addEventListener('click', (ev) => {
       ev.preventDefault()
       let searchTerm = document.getElementById('search-input').value
-      let searchUrl = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${APIKEY}`
+      let searchUrl = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}`
       searchAndRender(searchUrl, searchTerm)
     })
   }
