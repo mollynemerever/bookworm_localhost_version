@@ -88,7 +88,7 @@ function addLogInListener(){  //add listener to log in button
             'Content-Type': 'application/json'},
       body: JSON.stringify({title: bookTitle, author: bookAuthor, photo_url: bookPhoto, description:bookDesc})
     }
-    let url = 'https://bookworm-19.herokuapp.com/api/v1/books'
+    let url = 'http://localhost:3000/api/v1/books'
     fetch(url, config) // saves to book db
       .then(resp => resp.json())
       .then(data => {
@@ -98,7 +98,7 @@ function addLogInListener(){  //add listener to log in button
   }
 
   function createUsersBooksInstance(bookId){ //create userbook relationship in db
-    let url = 'https://bookworm-19.herokuapp.com/api/v1/usersbooks'
+    let url = 'http://localhost:3000/api/v1/usersbooks'
     let config = {
       method: 'POST',
       headers: {'Accept': 'application/json',
@@ -128,7 +128,7 @@ function addLogInListener(){  //add listener to log in button
             'Content-Type': 'application/json'},
       body: JSON.stringify({username: username})
     }
-    let url = 'https://bookworm-19.herokuapp.com/api/v1/users'
+    let url = 'http://localhost:3000/api/v1/users'
     fetch(url, config)
       .then(resp => resp.json())
       .then(data => {
@@ -182,7 +182,6 @@ function addLogInListener(){  //add listener to log in button
     }
     filter.addEventListener('click', (ev) => {
       ev.preventDefault()
-      console.log(`${select.value}`)
       FILTER = select.value
       console.log(FILTER)
       clearPageContents()
@@ -225,7 +224,7 @@ function addLogInListener(){  //add listener to log in button
   }
 
   function getReadingList(){ //gets book list from usersbooks db
-    let url = `https://bookworm-19.herokuapp.com/api/v1/usersbooks/${USERID}`
+    let url = `http://localhost:3000/api/v1/usersbooks/${USERID}`
     fetch(url)
       .then(resp => resp.json())
       .then(data => {
@@ -288,7 +287,7 @@ function addLogInListener(){  //add listener to log in button
       let readStatus = book.read_status
       let note = book.comment
 
-        let url = `https://bookworm-19.herokuapp.com/api/v1/books/${bookId}`
+        let url = `http://localhost:3000/api/v1/books/${bookId}`
         fetch(url)
           .then(resp => resp.json())
           .then(data => {
@@ -384,6 +383,7 @@ function addLogInListener(){  //add listener to log in button
         if (readButton.textContent === 'unread'){
           readButton.textContent = 'read'
           let status = true
+          //console.log(status)
           updateReadStatus(usersbooksId, status) //backend update
         } else {
           readButton.textContent = 'unread'
@@ -413,7 +413,7 @@ function addLogInListener(){  //add listener to log in button
             'Content-Type': 'application/json'},
       body: JSON.stringify({id: usersbooksId, book_id: bookId, comment: input})
     }
-    let url = `https://bookworm-19.herokuapp.com/api/v1/usersbooks/${usersbooksId}`
+    let url = `http://localhost:3000/api/v1/usersbooks/${usersbooksId}`
     fetch(url, config)
       .then(() => {
         clearPageContents()
@@ -428,12 +428,12 @@ function addLogInListener(){  //add listener to log in button
             'Content-Type': 'application/json'},
       body: JSON.stringify({id: usersbooksId, read_status: status})
     }
-    let url = `https://bookworm-19.herokuapp.com/api/v1/usersbooks/${usersbooksId}`
+    let url = `http://localhost:3000/api/v1/usersbooks/${usersbooksId}`
     fetch(url, config)
   }
 
   function removeBook(bookId){ //removes book from usersbooks, but not books db
-    let url = `https://bookworm-19.herokuapp.com/api/v1/usersbooks/${bookId}`
+    let url = `http://localhost:3000/api/v1/usersbooks/${bookId}`
     let config = {
       method: 'DELETE',
       headers: {'Accept': 'application/json',
@@ -458,6 +458,7 @@ function addLogInListener(){  //add listener to log in button
       clearPageContents()
       clearReturnAndSearchButtons()
       renderSearchForButton()
+      renderFilter()
       getReadingList()
     })
     div.appendChild(returnButton)

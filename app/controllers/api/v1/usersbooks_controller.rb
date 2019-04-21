@@ -21,9 +21,8 @@ class Api::V1::UsersbooksController < ActionController::Base
   end
 
   def update
-    @usersbooks = Usersbooks.where(id: params[:id], book_id: params[:book_id])
-
-    if params[:read_status] #if params sent over with read_status update
+    @usersbooks = Usersbooks.where(id: params[:id])
+    if params[:read_status] != nil #if params sent over with read_status update
       @usersbooks.update(read_status: params[:read_status])
     else #params sent with comment update
       @usersbooks.update(comment: params[:comment])
