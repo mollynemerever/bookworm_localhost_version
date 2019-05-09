@@ -5,7 +5,7 @@
 
 ###### Project completed as part of [Flatiron School](https://flatironschool.comcampuses/seattle/) curriculum.
 
-[project gif]
+![project gif](https://github.com/mollynemerever/bookworm_localhost_version/blob/master/ezgif.com-gif-to-webp.gif)
 
 ## Project FAQ
 #### 1. What is bookworm?
